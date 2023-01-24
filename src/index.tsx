@@ -1,6 +1,6 @@
 /* @refresh reload */
 import 'bootstrap/scss/bootstrap.scss';
-import {base} from 'base';
+import {base} from './base';
 import { render } from 'solid-js/web';
 
 /**
