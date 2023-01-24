@@ -1,6 +1,5 @@
 import { JSXElement } from "solid-js";
-import { JSX } from "solid-js/jsx-runtime";
-
+import {base} from './base';
 
 export function Layout({children, page}:{children:JSXElement, page:string}){
     page = page.replace(/^\//, '');
@@ -12,9 +11,10 @@ export function Layout({children, page}:{children:JSXElement, page:string}){
       </a>
 
       <ul class="nav nav-pills">
-      <li class="nav-item"><a href="/scoreboard" class="nav-link" classList={{active:page == 'scoreboard'}}>Scoreboard</a></li>
-        <li class="nav-item"><a href="/choose" class="nav-link" classList={{active:page == 'choose'}}>Choose</a></li>
-        <li class="nav-item"><a href="/draft" class="nav-link" classList={{active:page == 'draft'}} aria-current="page">Pick a number</a></li>
+        <li class="nav-item"><a href={`${base}/between`} class="nav-link" classList={{active:page == '' || page == 'between'}}>Between</a></li>
+        <li class="nav-item"><a href={`${base}/scoreboard`} class="nav-link" classList={{active:page == '' || page == 'scoreboard'}}>Scoreboard</a></li>
+        <li class="nav-item"><a href={`${base}/choose`} class="nav-link" classList={{active:page == 'choose'}}>Choose</a></li>
+        <li class="nav-item"><a href={`${base}/draft`} class="nav-link" classList={{active:page == 'draft'}} aria-current="page">Pick a number</a></li>
         <li class="nav-item"><a href="#" class="nav-link">About</a></li>
       </ul>
     </header>

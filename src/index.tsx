@@ -1,6 +1,6 @@
 /* @refresh reload */
 import 'bootstrap/scss/bootstrap.scss';
-
+import {base} from 'base';
 import { render } from 'solid-js/web';
 
 /**
@@ -35,5 +35,5 @@ function match(path):JSXElement {
     }
 }
 //TODO - use some routing thing instead of this.
-const pathname =window.location.pathname.replace('/randumber', '');
+const pathname =window.location.pathname.replace(base, '');
 render(() => <Layout  page={pathname} children={match(pathname)}/>, document.getElementById('root') as HTMLElement);
