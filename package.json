@@ -1,10 +1,10 @@
 {
-  "name": "randummer",
+  "name": "randumber",
   "version": "0.0.0",
   "description": "",
   "scripts": {
     "dev": "vite",
-    "build": "vite build",
+    "build": "vite build --base /randumber",
     "serve": "vite preview"
   },
   "license": "MIT",
