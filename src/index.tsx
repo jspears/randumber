@@ -34,4 +34,6 @@ function match(path):JSXElement {
             return <Between />
     }
 }
-render(() => <Layout  page={window.location.pathname} children={match(window.location.pathname)}/>, document.getElementById('root') as HTMLElement);
+//TODO - use some routing thing instead of this.
+const pathname =window.location.pathname.replace('/randumber', '');
+render(() => <Layout  page={pathname} children={match(pathname)}/>, document.getElementById('root') as HTMLElement);
