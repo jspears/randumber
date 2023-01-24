@@ -1,6 +1,5 @@
 /* @refresh reload */
 import 'bootstrap/scss/bootstrap.scss';
-import {base} from './base';
 import { render } from 'solid-js/web';
 
 /**
@@ -29,11 +28,13 @@ function match(path):JSXElement {
                 return <PreRank/>;
 
         case '':
+            case '/':
         case '/between':
         default:
             return <Between />
     }
 }
+const pathname = Object.fromEntries(new URLSearchParams(window.location.search)).path || '';
+
 //TODO - use some routing thing instead of this.
-const pathname =window.location.pathname.replace(base, '');
 render(() => <Layout  page={pathname} children={match(pathname)}/>, document.getElementById('root') as HTMLElement);

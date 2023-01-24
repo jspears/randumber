@@ -6,6 +6,7 @@ import {
     For
 } from "solid-js";
 import { createStore } from "solid-js/store";
+import { PushButton } from "./PushButton";
 import style from './Scoreboard.module.css';
 import { createLocalStore } from "./utils";
 interface Player {
@@ -84,13 +85,7 @@ export const Scoreboard = () => {
                 </For>
             </ul>
             <div class='container d-flex align-items-center justify-content-center p-3'>
-            {busy() ? <div class={`spinner-border text-primary ${style.spinner}`} role="status">
-                <span class="visually-hidden">Shuffling...</span>
-            </div> :
-                state.players.length > 1 ? <button disabled={busy()} class={`btn btn-lg btn-primary btn-circle ${style.shuffleButton}`} classList={{ [style.busyButton]: busy() }} onClick={run}>
-                    Shuffle
-                </button> : <></>
-            }
+                { state.players.length > 1 ? <PushButton onClick={run} busy={busy()} label={'Shuffle'}/> :<></>}
             </div>
             <form class="admin form" onSubmit={handleSubmit}>
                 <div class="player input-group">

@@ -4,7 +4,7 @@
   "description": "",
   "scripts": {
     "dev": "vite",
-    "build": "vite build --base=/randumber",
+    "build": "vite build --base=/randumber ",
     "serve": "vite preview"
   },
   "license": "MIT",
