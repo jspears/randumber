@@ -13,9 +13,9 @@ import Example from './App';
 import { Between, Between as Index } from './Between';
 import { Choose } from './Choose'
 import { Scoreboard } from './Scoreboard';
-import { JSX } from 'solid-js/jsx-runtime';
 import { JSXElement } from 'solid-js';
 import { PreRank } from './Prerank';
+import { Layout } from './Layout';
 
 function match(path):JSXElement {
     switch (path) {
@@ -27,16 +27,11 @@ function match(path):JSXElement {
             return <Example />;
             case '/prerank':
                 return <PreRank/>;
-                
+
         case '':
         case '/between':
         default:
             return <Between />
     }
 }
-function Layout({children}:{children:JSX.Element}){
-  return  <div class="container-fluid bg-body">
-        {children}
-    </div>
-}
-render(() => <Layout children={match(window.location.pathname)}/>, document.getElementById('root') as HTMLElement);
+render(() => <Layout  page={window.location.pathname} children={match(window.location.pathname)}/>, document.getElementById('root') as HTMLElement);

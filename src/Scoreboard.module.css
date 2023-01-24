@@ -9,10 +9,11 @@
     display: inline-block;
 }
 
-.shuffleButton {
+.shuffleButton, .spinner {
     padding: 3rem;
     aspect-ratio: 1;
     border-radius: 200rem;
     display: inline;
-    max-width: 10rem;
+    width: 10rem;
+    height: 10rem;
 }

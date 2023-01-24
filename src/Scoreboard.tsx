@@ -7,33 +7,31 @@ import {
 } from "solid-js";
 import { createStore } from "solid-js/store";
 import style from './Scoreboard.module.css';
+import { createLocalStore } from "./utils";
 interface Player {
     score: number;
     name: string;
 }
 export const Scoreboard = () => {
     let newName;
-    const [busy, setBusy] =createSignal(false);
-    const [state, setState] = createStore<{ players: Player[] }>({
+    let prevPlayers: Player[] = [];
+    const [busy, setBusy] = createSignal(false);
+    const [state, setState] = createLocalStore<{ players: Player[] }>("scoreboard", {
         players: [
-            { name: "Mark", score: 3 },
-            { name: "Troy", score: 2 },
-            { name: "Jenny", score: 1 },
-            { name: "David", score: 8 }
         ]
     }),
-        lastPos = new WeakMap(),
-        curPos = new WeakMap(),
-      
-        run = ()=>{
+
+
+        run = () => {
             setBusy(true);
-            const it = setInterval(()=>{
-                setState("players", p=>{
+            const it = setInterval(() => {
+                setState("players", p => {
+                    prevPlayers = p;
                     return shuffle(p)
                 });
             }, 300);
 
-            setTimeout( (v)=>{
+            setTimeout((v) => {
                 clearInterval(v);
                 setBusy(false);
             }, 3000, it);
@@ -48,14 +46,14 @@ export const Scoreboard = () => {
         handleDeleteClick = (player: Player) => {
             const idx = state.players.indexOf(player);
             if (idx != -1)
-                setState("players", (p) => [...p.slice(0, idx), ...p.slice(idx + 1)]);
+                setState("players", (p) => p.filter((v, i) => i != idx));
         },
 
         createStyles = (player: Player) => {
             const [style, setStyle] = createSignal<Record<string, string>>({});
             createComputed(() => {
-                
-                const offset = lastPos.get(player) * 18 - curPos.get(player) * 18;
+
+                const offset = Math.max(prevPlayers.indexOf(player), 0) * 18 - Math.max(state.players.indexOf(player), 0) * 18;
                 const t = setTimeout(() =>
                     setStyle({ transition: "250ms", transform: null })
                 );
@@ -71,22 +69,29 @@ export const Scoreboard = () => {
     return (
         <div id="scoreboard" class="row">
             <ul class="list-group">
+
                 <For each={state.players}>
                     {(player) => {
-                        const getStyles = createStyles(player),
-                            { name } = player;
-                        return (
-                            <div class={`player list-group-item  d-flex justify-content-between align-items-start ${style.item}`} style={getStyles()}>
-                                <div class="name">{name}</div>
-                                <button type="button" class={`btn-close btn-xs ${style.close}`} aria-label="Remove" onClick={
-                                    () => handleDeleteClick(player)
-                                } />
-                            </div>
-                        );
+                        const style = createStyles(player);
+                        return (<li class={`player list-group-item  d-flex justify-content-between align-items-start ${style.item}`} style={style()}>
+                            <div class="name">{player.name}</div>
+                            <button type="button" class={`btn-close btn-xs ${style.close}`} aria-label="Remove" onClick={
+                                () => handleDeleteClick(player)
+                            } />
+                        </li>)
                     }}
+
                 </For>
             </ul>
-            <button disabled={busy()} class={`btn btn-lg btn-primary btn-circle ${style.shuffleButton}`} classList={{[style.busyButton]:busy()}} onClick={run}>Shuffle</button>
+            <div class='container d-flex align-items-center justify-content-center p-3'>
+            {busy() ? <div class={`spinner-border text-primary ${style.spinner}`} role="status">
+                <span class="visually-hidden">Shuffling...</span>
+            </div> :
+                state.players.length > 1 ? <button disabled={busy()} class={`btn btn-lg btn-primary btn-circle ${style.shuffleButton}`} classList={{ [style.busyButton]: busy() }} onClick={run}>
+                    Shuffle
+                </button> : <></>
+            }
+            </div>
             <form class="admin form" onSubmit={handleSubmit}>
                 <div class="player input-group">
                     <input
@@ -106,6 +111,6 @@ export const Scoreboard = () => {
 };
 
 /** yes its not fast, but its short, and that counts for something. */
-function shuffle<T>(arr: T[], algo = () => Math.random() - 0.5):T[] {
+function shuffle<T>(arr: T[], algo = () => Math.random() - 0.5): T[] {
     return arr.slice().sort(algo);
 }
