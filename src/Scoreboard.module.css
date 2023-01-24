@@ -1,0 +1,18 @@
+.item .close {
+    display: none;
+    font-size:.5rem;
+    align-self: center;
+    padding-right: 0;
+    margin-right: -.5rem;
+}
+.item:hover .close {
+    display: inline-block;
+}
+
+.shuffleButton {
+    padding: 3rem;
+    aspect-ratio: 1;
+    border-radius: 200rem;
+    display: inline;
+    max-width: 10rem;
+}

@@ -1,0 +1,11 @@
+.listItem:hover button {
+    display: inline;    
+}
+.listItem button {
+    display: none;
+    font-size: .5rem;
+    align-self: center;
+}
+.active {
+    background-color: red;
+}
